@@ -1,6 +1,6 @@
 # Stock Data Analysis with Python + Postgres
 
-This project demonstrates a Python app that fetches stock data using the yfinance library, computes 5-day and 30-day moving averages, and stores the results in a Postgres database. Both services run in Docker containers using Docker Compose. It also includes instructions for debugging the Python app using Cursor IDE.
+This project demonstrates a Python app that fetches stock data using the yfinance library, computes 5-day and 30-day moving averages, and stores the results in a Postgres database using SQLAlchemy ORM. Both services run in Docker containers using Docker Compose. It also includes instructions for debugging the Python app using Cursor IDE.
 
 ## Prerequisites
 
@@ -11,18 +11,20 @@ This project demonstrates a Python app that fetches stock data using the yfinanc
 
 ## Project Structure
 
-- `hello.py` — Python script that fetches stock data, calculates moving averages, and stores results in Postgres
+- `hello.py` — Python script that fetches stock data, calculates moving averages, and stores results in Postgres using SQLAlchemy ORM
 - `Dockerfile` — Builds the Python app container
 - `docker-compose.yml` — Defines and runs the Python and Postgres containers together
-- `requirements.txt` — Python dependencies (psycopg2-binary, yfinance, pandas)
+- `requirements.txt` — Python dependencies (psycopg2-binary, yfinance, pandas, sqlalchemy)
 
 ## Features
 
 - **Configurable Stock Symbols**: Edit the `STOCK_SYMBOLS` list in `hello.py` to analyze different stocks
 - **Moving Averages**: Calculates 5-day and 30-day moving averages for each stock
+- **SQLAlchemy ORM**: Uses SQLAlchemy for database operations instead of raw SQL
 - **Flexible Database Schema**: Stores stock symbols and historical data without hardcoding specific symbols
 - **Data Persistence**: Stores open, high, low, close prices, volume, and moving averages
 - **Error Handling**: Gracefully handles connection issues and missing data
+- **Object-Relational Mapping**: Clean separation between database schema and Python code
 
 ## Running the App
 
@@ -36,11 +38,11 @@ This project demonstrates a Python app that fetches stock data using the yfinanc
    docker compose up --build
    ```
    The Python app will:
-   - Connect to the Postgres database
-   - Create the necessary tables
+   - Connect to the Postgres database using SQLAlchemy
+   - Create the necessary tables using ORM models
    - Fetch stock data for configured symbols (AAPL, GOOGL, MSFT, TSLA, AMZN)
    - Calculate 5-day and 30-day moving averages
-   - Store all data in the database
+   - Store all data in the database using SQLAlchemy sessions
    - Display a summary of the latest data
 
 ## Debugging with Cursor IDE (Attach to Python)
@@ -65,6 +67,15 @@ To analyze different stocks, edit the `STOCK_SYMBOLS` list in `hello.py`:
 STOCK_SYMBOLS = ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'AMZN', 'NVDA', 'META']
 ```
 
+## Database Models
+
+The application uses two SQLAlchemy models:
+
+- **StockSymbol**: Represents stock symbols with company names
+- **StockData**: Represents historical stock data with moving averages
+
+Both models include proper relationships and constraints for data integrity.
+
 ## Stopping the App
 
 To stop and remove the containers, press `Ctrl+C` in your terminal and run:
@@ -75,6 +86,7 @@ docker compose down
 ## Notes
 - The Python app will wait and retry if the Postgres database is not immediately available.
 - Stock data is fetched from Yahoo Finance via the yfinance library.
+- SQLAlchemy ORM provides clean, maintainable database operations.
 - The database schema supports any number of stock symbols without modification.
 - You can edit and debug the code in Cursor IDE as usual.
 - For more advanced setups (e.g., real-time data, web interface), update the Dockerfile, requirements, and Compose file as needed. 
