@@ -1,5 +1,5 @@
-from src.db import wait_for_database, create_tables, get_session
-from src.logic import insert_or_update_symbols, get_stock_data, store_stock_data, display_latest_data
+from db import wait_for_database, create_tables, get_session
+from logic import insert_or_update_symbols, get_stock_data, store_stock_data, display_latest_data
 
 # Configurable stock symbols
 STOCK_SYMBOLS = ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'AMZN']

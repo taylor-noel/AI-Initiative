@@ -98,4 +98,17 @@ docker compose down
 - SQLAlchemy ORM provides clean, maintainable database operations.
 - The database schema supports any number of stock symbols without modification.
 - You can edit and debug the code in Cursor IDE as usual.
-- For more advanced setups (e.g., real-time data, web interface), update the Dockerfile, requirements, and Compose file as needed. 
+- For more advanced setups (e.g., real-time data, web interface), update the Dockerfile, requirements, and Compose file as needed.
+
+## Running Unit Tests
+
+Unit tests are located in the `tests/` directory and use `pytest`.
+
+To run all tests:
+
+```sh
+pip install -r requirements.txt
+pytest
+```
+
+The tests use an in-memory SQLite database and mock yfinance, so they do not require a running Postgres instance or network access. 
