@@ -59,13 +59,22 @@ This project demonstrates a Python app that fetches stock data using the yfinanc
    - Port: `5678`
 6. Start debugging. Cursor will connect to the running Python container and stop at your breakpoint.
 
-## Customizing Stock Symbols
+## Customizing Stock Symbols and Date Range
 
 To analyze different stocks, edit the `STOCK_SYMBOLS` list in `hello.py`:
 
 ```python
 STOCK_SYMBOLS = ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'AMZN', 'NVDA', 'META']
 ```
+
+To change the date range for analysis, edit the `START_DATE` and `END_DATE` variables in `hello.py`:
+
+```python
+START_DATE = '2024-01-01'
+END_DATE = '2024-06-01'
+```
+
+The app will fetch and store all available data for the specified symbols and date range, and compute moving averages for each day in that range.
 
 ## Database Models
 

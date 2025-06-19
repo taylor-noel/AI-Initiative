@@ -10,6 +10,11 @@ from sqlalchemy.exc import SQLAlchemyError
 # Configurable stock symbols
 STOCK_SYMBOLS = ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'AMZN']
 
+# Configurable date range (inclusive)
+# Format: 'YYYY-MM-DD'
+START_DATE = '2024-01-01'
+END_DATE = '2024-06-01'
+
 # SQLAlchemy setup
 Base = declarative_base()
 
@@ -118,15 +123,15 @@ def insert_or_update_symbols(session, symbols):
         print(f"Error inserting symbols: {e}")
         raise
 
-def get_stock_data(symbol, days=60):
-    """Fetch stock data for a symbol"""
+def get_stock_data(symbol, start_date=START_DATE, end_date=END_DATE):
+    """Fetch stock data for a symbol in a configurable date range"""
     try:
         ticker = yf.Ticker(symbol)
-        # Get data for more days to calculate 30-day moving average
-        data = ticker.history(period=f"{days}d")
+        # Fetch data for the given date range
+        data = ticker.history(start=start_date, end=end_date)
         
         if data.empty:
-            print(f"No data found for {symbol}")
+            print(f"No data found for {symbol} in range {start_date} to {end_date}")
             return None
             
         # Calculate moving averages
@@ -261,6 +266,7 @@ def display_latest_data(session):
 def main():
     """Main function to run the stock analysis"""
     print("Starting stock data analysis...")
+    print(f"Configured date range: {START_DATE} to {END_DATE}")
     
     # Connect to database
     print("Step 1: Connecting to database...")
@@ -294,7 +300,7 @@ def main():
         print("Step 4: Processing stock data...")
         for symbol in STOCK_SYMBOLS:
             print(f"\nProcessing {symbol}...")
-            data = get_stock_data(symbol)
+            data = get_stock_data(symbol, START_DATE, END_DATE)
             if data is not None:
                 print(f"  Got {len(data)} data points for {symbol}")
                 store_stock_data(session, symbol, data)
